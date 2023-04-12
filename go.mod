@@ -1,4 +1,4 @@
-module github.com/scalvert/gh-pages
+module github.com/scalvert/gh-template
 
 go 1.20
 
