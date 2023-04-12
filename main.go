@@ -44,13 +44,6 @@ func main() {
 
 	templateCmd.Flags().StringVarP(&templateOpts.outDir, "out-dir", "o", ".", "Output directory path")
 
-	// rootCmd := &cobra.Command{
-	// 	Use:   "pages",
-	// 	Short: "GitHub Pages commands",
-	// }
-
-	// rootCmd.AddCommand(templateCmd)
-
 	if err := templateCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
