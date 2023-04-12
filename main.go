@@ -125,9 +125,15 @@ func readTemplate(templateName string) (string, error) {
 func writeTemplate(outDir string, templateName string, templateContent string) (string, error) {
 	templatePath := filepath.Join(outDir, templateName)
 
-	err := os.WriteFile(templatePath, []byte(templateContent), 0644)
+	_, err := os.Stat(outDir)
 
-	return templatePath, err
+	if os.IsNotExist(err) {
+		os.MkdirAll(outDir, 0755)
+	}
+
+	writeErr := os.WriteFile(templatePath, []byte(templateContent), 0644)
+
+	return templatePath, writeErr
 }
 
 func templateRun(templateOpts *TemplateOptions) error {
@@ -144,20 +150,14 @@ func templateRun(templateOpts *TemplateOptions) error {
 		return nil
 	}
 
-	templatePath, _ := writeTemplate(templateOpts.outDir, templateOpts.template, template)
+	templatePath, err := writeTemplate(templateOpts.outDir, templateOpts.template, template)
+
+	if err != nil {
+		fmt.Println("Error writing template:", err)
+		return nil
+	}
 
 	fmt.Println("Template written to:", templatePath)
-	// // Decode the template file content.
-	// templateContent, err := content.Decode()
-	// if err != nil {
-	// 	return errors.New("failed to decode template file content: " + err.Error())
-	// }
-
-	// // Write the template file to the output directory.
-	// err = ioutil.WriteFile(filepath.Join(outDir, templateName), []byte(templateContent), 0644)
-	// if err != nil {
-	// 	return errors.New("failed to write template file to output directory: " + err.Error())
-	// }
 
 	return nil
 }
