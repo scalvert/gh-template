@@ -81,7 +81,7 @@ func getTemplateDirPath(cacheDir string) string {
 
 func cloneRepo(ctx context.Context, repoURL string, clonePath string) {
 	client := &git.Client{}
-	fmt.Println(clonePath)
+
 	target, err := client.Clone(ctx, repoURL, []string{clonePath})
 
 	if err != nil {
